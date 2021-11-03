@@ -1,0 +1,29 @@
+<!-- Discoun.njk
+***************************
+***********re**************** 
+*************************** -->
+<div id="discountCode" class="h-full flex flex-col lg:flex-row absolute inset-0">
+  <i class="leading-[0] absolute bg-black text-white lg:bg-white rounded-md top-[6px] right-[8px] lg:top-[8px] lg:right-[8px] text-xl font-bold z-10 w-8 h-8 lg:text-black flex items-center justify-center cursor-pointer not-italic hover:bg-sky-300 hover:text-white transition-colors" data-dialog-close>✕</i>
+  <!-- Image 
+  *************************** -->
+  <figure id="discountImg" class="h-2/5 w-full lg:h-full lg:w-1/2 object-cover"></figure>
+  <!-- Content
+  *************************** -->
+  <section class="flex flex-col justify-between text-white p-2 lg:p-4 text-center h-3/5 lg:h-full lg:w-1/2">
+    <!-- Offer -->
+    <div class="flex-grow flex flex-col justify-evenly">
+      <span class="flex-none">Experience Our World Of Beauty!</span>
+      <div class="grid items-center justify-center">
+        <span id="discountText" class="text-5xl lg:text-6xl font-bold uppercase text-pink-300 font-mono tracking-tight block">Save 100% (summer100)</span>
+        <span class="text-2xl lg:text-4xl font-medium uppercase tracking-wider font-mono whitespace-nowrap block">On Todays Order</span>
+      </div>
+      <i class="text-gray-400 text-base lg:text-lg leading-none">Be the first to know about new<br />procedures and exclusive offers.</i>
+    </div>
+    <!-- Form Submit-->
+    <div class="flex-none flex flex-col gap-2 lg:gap-4">
+      <input id="discountEmail" type="email" placeholder="Enter Email" class="text-center rounded-md h-12 lg:h-14 text-black text-lg focus:border-sky-300 focus:ring focus:ring-sky-200" />
+      <input id="faux" type="email" placeholder="Faux Email" class="text-center rounded-md h-12 lg:h-14 text-black text-lg focus:border-sky-300 focus:ring focus:ring-sky-200" />
+      <button id="discountButton" disabled class="bg-sky-300 hover:bg-sky-400 transition-colors text-white leading-none rounded-md no-underline inline-flex items-center uppercase text-2xl justify-center h-12 lg:h-14 btn btn-default">View My Code</button>
+    </div>
+  </section>
+</div>

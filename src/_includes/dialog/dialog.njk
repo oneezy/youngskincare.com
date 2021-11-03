@@ -1,0 +1,27 @@
+<!-- dialog -->
+<div id="dialog" class="dialog__page w-screen h-screen z-0 pointer-events-none overflow-hidden fixed inset-0 flex items-center justify-center opacity-0">
+	<div class="dialog__scrim bg-black bg-opacity-50 w-screen h-screen fixed inset-0 flex items-center justify-center z-0" data-dialog-close></div>
+	<div class="dialog__wrapper w-5/6 h-5/6 lg:w-3/4 lg:h-1/2 bg-black max-w-screen-md opacity-0 border-sky-300 border-[6px] relative  rounded-2xl">
+    <section id="dialogContainer" class="dialog__container border-black border-[3px] bg-black flex flex-col absolute inset-0 overflow-hidden rounded-xl">
+      <div id="acctl3802_dvControl" class="Control MailingList Control_3802">
+        
+        <!-- Extract content 
+        ***************************
+        *************************** 
+        *************************** -->
+        <div id="discountControls" class="hidden">
+          <div id="acctl3802_dvControlHeader" class="ControlHeader ControlHeader_3802">
+            <img src="https://www.youngskincare.com/images/coupon.png" alt="Winter 10% (winter10)" />
+            Winter 10% (winter10)
+          </div>
+          <input name="acctl3802$txtEmailAddress" type="text" id="acctl3802_txtEmailAddress" class="ControlInput ControlInput_3802" />
+          <input type="submit" name="acctl3802$btnSubmit" value="Go" id="acctl3802_btnSubmit" class="ThemeButton GoThemeButton MailingListGoThemeButton btn btn-default" data-key="ThemeButton_Go_MailingList_string" />
+        </div>
+          
+        {% include "discount/discount.njk" %}
+        {% include "discount/thankyou.njk" %}
+
+      </div>
+		</section>
+	</div>
+</div>

@@ -1,0 +1,10 @@
+#discountCode, 
+#discountThankyou {
+  /* transition: .22s ease-in-out;  */
+  transition: .65s cubic-bezier(.57, 0, 0, .99);
+}
+
+.discount--thankyou #discountCode, 
+.discount--thankyou #discountThankyou {
+  transform: translateY(calc(-100% - 1px));
+}

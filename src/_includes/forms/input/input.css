@@ -1,0 +1,4 @@
+input[disabled] {
+  cursor: default;
+  opacity: .5;
+}

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+{% include "head/head.njk" %}
+<body
+  {%- if page.fileSlug == "" %} id="home" class="{% if pageType %}{{ pageType }} {{ pageType }}-home{% endif -%} {{ pageClasses }}"
+  {%- else %} id="{{ page.fileSlug }}" class="{% if pageType %}{{ pageType }} {{ pageType }}-{{ page.fileSlug }}{% endif -%} {{ pageClasses }}"
+  {% endif %}>
+
+  <form id="MainForm" method="post" action="/">
+    <div>
+      <input type="hidden" name="__VS" id="__VS" value="754928">
+      <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="">
+    </div>
+
+    {% include "header/header.njk" %}
+    <main id="main">
+      {{ content | safe }}
+    </main>
+    {% include "footer/footer.njk" %}
+    {% include "dialog/dialog.njk" %}
+  </form>
+
+</body>
+</html>

@@ -1,0 +1,622 @@
+/* 
+//===================================================
+//                                                   
+//  ####    ##    ###    ##       #####    ####    
+//  ##  ##  ##   ## ##   ##      ##   ##  ##       
+//  ##  ##  ##  ##   ##  ##      ##   ##  ##  ###  
+//  ##  ##  ##  #######  ##      ##   ##  ##   ##  
+//  ####    ##  ##   ##  ######   #####    ####    
+//                                                   
+//===================================================*/
+
+/* SETUP
+▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇*/
+.dialog__page,
+.dialog__scrim {
+  /* width: 100%; height: 100%; 
+	position: fixed; top: 0; right: 0; bottom: 0; left: 0; 
+	display: flex; align-items: center; justify-content: center;  */
+}
+
+.dialog__page {
+  /* z-index: -1;
+  opacity: 1;
+  pointer-events: none;
+  overflow: hidden; */
+}
+
+.dialog__scrim {
+  /* opacity: 0;
+  background-color: var(--dialogScrimBackgroundColor, rgba(0, 0, 0, .3));
+  z-index: -1 !important; */
+}
+
+.dialog__wrapper {
+  /* opacity: 0;
+  background-color: var(--dialogWrapperBackgroundColor, white); */
+  box-shadow: 0px 0px var(--dialogGlow, 32px) var(--dialogGlowSpread, 0px) var(--dialogGlowColor, rgba(0, 0, 0, .7));
+}
+
+.dialog__container {
+  /* color: var(--dialogTextColor, black);
+  padding: var(--dialogContainerPadding, 2rem); */
+}
+
+
+
+
+
+
+/* Flex Grow Trick (temporary) */
+.dialog__wrapper {
+  /* position: relative; */
+}
+
+.dialog__container {
+  /* display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0; */
+}
+
+.dialog__content {
+  /* flex-grow: 1;
+  overflow: auto;
+  overflow-x: hidden; */
+}
+
+/* TYPE
+▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇*/
+
+/* Types
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* Default */
+.dialog .dialog__wrapper {
+  /* min-height: 50%;
+  width: clamp(200px, 80%, 600px);
+  border-radius: 25px; */
+}
+
+/* Others */
+.dialog--page .dialog__wrapper {
+  /* height: 100%;
+  width: 100%;
+  border-radius: 0; */
+}
+
+.dialog--half .dialog__wrapper {
+  height: 80%;
+  width: clamp(200px, 80%, 1024px);
+  /* border-radius: 25px; */
+}
+
+.dialog--tooltip .dialog__wrapper {
+  min-height: 50%;
+  width: 100%;
+  /* border-radius: 25px 25px 0 0; */
+  align-self: flex-end;
+}
+
+/* dialog Image */
+.dialog--image .dialog__wrapper {
+  /* overflow: hidden;
+  min-height: 50%;
+  width: clamp(200px, 80%, 500px);
+  padding-top: 0; */
+}
+
+.dialog--image .dialog__container {
+  /* padding: 0; */
+}
+
+.dialog--image .dialog__hero {
+  /* background-color: var(--dialogHeroBackgroundColor, black);
+  background-image: var(--dialogHeroBackgroundImage, radial-gradient(black, sky));
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  min-height: 180px;
+  height: 50%;
+  width: calc(100% + 4rem);
+  transform: translateX(-2rem); */
+}
+
+.dialog--image .dialog__icon {
+  /* color: white;
+  font-size: var(--dialogHeroIconSize, 150px);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-style: normal; */
+}
+
+.dialog--image .dialog__content {}
+
+.dialog--image .dialog__header {
+  /* padding: 1rem 0; */
+}
+
+
+/* Active + Inactive
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* Active (O) */
+.dialog.active .dialog__page {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1000;
+}
+
+.dialog.active .dialog__scrim {
+  /* opacity: .4 !important; */
+  pointer-events: auto;
+  animation: fadeIn .22s ease-in-out forwards;
+}
+
+.dialog.active .dialog__wrapper {
+  opacity: 1;
+  animation: zoomIn .22s ease-in-out;
+}
+
+.dialog.active .dialog__container {}
+
+/* Inactive (X) */
+.dialog.active.inactive .dialog__page {
+  opacity: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dialog.active.inactive .dialog__scrim {
+  opacity: 1;
+  pointer-events: none;
+  animation: fadeOut .22s ease-in-out forwards;
+}
+
+.dialog.active.inactive .dialog__wrapper {
+  animation: zoomOut .22s ease-in-out;
+}
+
+
+/* ANIMATIONS
+▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇*/
+
+/* Hide BG
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+.dialog.dialog--hide-bg.active body>*:not(#dialog) {
+  opacity: 0;
+  animation: fadeOut .22s ease-in-out;
+}
+
+.dialog.dialog--hide-bg.active.inactive body>*:not(#dialog) {
+  opacity: 1;
+  animation: fadeIn .22s ease-in-out;
+}
+
+/* Fade In
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+.dialog.dialog--fadeIn.active .dialog__scrim {
+  opacity: 0 !important;
+}
+
+.dialog.dialog--fadeIn.active .dialog__wrapper {
+  animation: fadeIn .22s ease-in-out;
+}
+
+.dialog.dialog--fadeIn.active.inactive .dialog__scrim {
+  opacity: 0 !important;
+}
+
+.dialog.dialog--fadeIn.active.inactive .dialog__wrapper {
+  animation: fadeOut .22s ease-in-out;
+}
+
+/* Zoom In
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+.dialog.dialog--zoomIn.active .dialog__scrim {}
+
+.dialog.dialog--zoomIn.active .dialog__wrapper {
+  animation: zoomIn .22s ease-in-out;
+}
+
+.dialog.dialog--zoomIn.active.inactive .dialog__scrim {}
+
+.dialog.dialog--zoomIn.active.inactive .dialog__wrapper {
+  animation: zoomOut .22s ease-in-out;
+}
+
+/* From Right
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* active (O) */
+.dialog.dialog--fromRight.active #page {
+  animation: slideLeftHalf .65s ease-in-out forwards;
+}
+
+.dialog.dialog--fromRight.active .dialog__scrim {
+  opacity: 0;
+  animation: fadeIn .65s ease-in-out forwards;
+}
+
+.dialog.dialog--fromRight.active .dialog__wrapper {
+  animation: fromRight .65s cubic-bezier(.57, 0, 0, .99);
+}
+
+/* inactive (X) */
+.dialog.dialog--fromRight.active.inactive #page {
+  animation: fromLeftHalf .65s ease-in-out;
+}
+
+.dialog.dialog--fromRight.active.inactive .dialog__scrim {
+  opacity: 0;
+  animation: fadeOut .65s ease-in-out forwards;
+}
+
+.dialog.dialog--fromRight.active.inactive .dialog__wrapper {
+  animation: slideRight .65s ease-in-out;
+}
+
+
+/* From Bottom
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* active (O) */
+.dialog.dialog--fromBottom.active .dialog__scrim {
+  animation: fadeIn .42s ease-in-out forwards;
+}
+
+.dialog.dialog--fromBottom.active .dialog__wrapper {
+  animation: fromBottom .42s ease-in-out forwards;
+}
+
+/* inactive (X) */
+.dialog.dialog--fromBottom.active.inactive .dialog__scrim {
+  animation: fadeOut .42s ease-in-out forwards;
+}
+
+.dialog.dialog--fromBottom.active.inactive .dialog__wrapper {
+  animation: slideDown .42s ease-in-out forwards;
+}
+
+
+
+
+/*==============================================                                           
+  ####    #####  ##   ##  ##   ####  #####  
+  ##  ##  ##     ##   ##  ##  ##     ##     
+  ##  ##  #####  ##   ##  ##  ##     #####  
+  ##  ##  ##      ## ##   ##  ##     ##     
+  ####    #####    ###    ##   ####  #####  
+==============================================*/
+
+/* Mobile */
+@media (min-width: 0) and (max-width: 849px) {
+
+  .dialog__container {
+    /* padding: var(--dialogContainerPadding, 2rem); */
+  }
+
+  .dialog__terms {
+    /* font-size: 12px; */
+  }
+
+  .dialog--image .dialog__wrapper {
+    /* min-height: 90%;
+    width: clamp(200px, 80%, 500px);
+    padding-top: 0; */
+  }
+
+  .dialog--image .dialog__hero {
+    /* min-height: 175px;
+    height: 50%;
+    max-height: 250px; */
+  }
+
+  .dialog--image .dialog__header {
+    /* padding: 2rem 0 1rem; */
+  }
+
+  .dialog--image .dialog__container {}
+
+
+}
+
+/* Desktop */
+@media (min-width: 850px) {}
+
+
+/* DON'T INCLUDE ANYTHING BELOW THIS! STILL NEED BUT PUT IN A DIFFERENT FILE */
+/* DON'T INCLUDE ANYTHING BELOW THIS! STILL NEED BUT PUT IN A DIFFERENT FILE */
+/* DON'T INCLUDE ANYTHING BELOW THIS! STILL NEED BUT PUT IN A DIFFERENT FILE */
+
+
+/* UTILITY
+▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇*/
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* KEYFRAMES
+▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇*/
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes zoomOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* FROM...
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* From Left */
+@keyframes fromLeft {
+  0% {
+    transform: translateX(-100vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromLeftHalf {
+  0% {
+    transform: translateX(-50vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* From Right */
+@keyframes fromRight {
+  0% {
+    transform: translateX(100vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fromRightHalf {
+  0% {
+    transform: translateX(-50vw);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* From Bottom */
+@keyframes fromBottom {
+  0% {
+    transform: translateY(100vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fromBottomHalf {
+  0% {
+    transform: translateY(100vh);
+  }
+
+  100% {
+    transform: translateY(50vh);
+  }
+}
+
+/* From Top */
+@keyframes fromTop {
+  0% {
+    transform: translateY(-100vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes fromTopHalf {
+  0% {
+    transform: translateY(-50vh);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* SLIDE...
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+/* Slide Right */
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes slideRightHalf {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(50vw);
+  }
+}
+
+/* Slide Left */
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-100vw);
+  }
+}
+
+@keyframes slideLeftHalf {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50vw);
+  }
+}
+
+/* Slide Down */
+@keyframes slideDown {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes slideDownHalf {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(50vh);
+  }
+}
+
+/* Slide Up */
+@keyframes slideUp {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-100vh);
+  }
+}
+
+@keyframes slideUpHalf {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50vh);
+  }
+}
+
+
+/* Spin
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Interactive Animations
+▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃▃*/
+@keyframes bounceDown {
+  20% {
+    transform: translate3d(0, 10px, 0) scaleY(.985);
+  }
+
+  40%,
+  45% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0) scaleY(.9);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 2000px, 0) scaleY(3);
+  }
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(11px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-13px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(13px, 0, 0);
+  }
+}

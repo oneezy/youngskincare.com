@@ -1,0 +1,26 @@
+@layer components {
+  
+  button[disabled],
+  input[disabled] {
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .button {
+    @apply 
+      bg-sky-300 
+      text-white 
+      leading-none 
+      px-6 
+      py-4 
+      rounded-md 
+      no-underline 
+      inline-flex 
+      items-center 
+      uppercase
+      text-2xl
+      justify-center !important;
+  }
+}

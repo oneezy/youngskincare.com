@@ -1,0 +1,21 @@
+<!-- Thankyou.njk
+***************************
+*************************** 
+*************************** -->
+<div id="discountThankyou" class="h-full flex flex-col absolute inset-0 top-full">
+  <!-- Content
+  *************************** -->
+  <section class="flex flex-col items-center justify-evenly text-white p-4 lg:p-4 text-center h-full">
+    <!-- Offer -->
+    <div class="grid gap-4">
+      <span class="text-5xl lg:text-8xl font-bold uppercase text-sky-300 font-mono tracking-tight">Thank you!</span>
+      <i class="text-2xl lg:text-4xl font-medium uppercase font-mono">Here's a <span id="discountPercent">20%</span> off coupon code:</i>
+    </div>
+    <!-- Form Submit-->
+    <div class="flex-none flex flex-col gap-2 lg:gap-4 w-full items-center">
+      <i id="thankyouMessage" class="text-gray-400 text-base lg:text-lg leading-tight">Click code to copy</i>
+      <input id="thankyouCode" type="text" readonly class="w-full lg:w-3/4 text-center rounded-md h-12 lg:h-14 text-black text-lg focus:border-sky-300 focus:ring focus:ring-sky-200" />
+      <button id="thankyouButton" data-dialog-close class="w-full lg:w-3/4 text-white border-white hover:bg-pink-300 transition-colors border-2 leading-none rounded-md no-underline inline-flex items-center uppercase text-2xl justify-center h-12 lg:h-14 btn btn-default">Continue Shopping</button>
+    </div>
+  </section>
+</div>
